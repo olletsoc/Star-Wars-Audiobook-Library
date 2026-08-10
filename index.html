@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Star Wars Audiobooks — Complete Library</title>
+<style>
+  :root { --bg:#05070d; --panel:#0d111c; --panel-hover:#161d30; --border:#1e2740; --gold:#f2c14e; --gold-dim:#b8923a; --purple:#c98bdb; --purple-dim:#8f5fa8; --text:#e8ecf5; --muted:#8b93a8; --accent:var(--gold); --accent-dim:var(--gold-dim); }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  body { background:radial-gradient(ellipse at top,#0a1020 0%,#05070d 55%); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; min-height:100vh; line-height:1.5; -webkit-font-smoothing:antialiased; }
+  body.legends-active { background:radial-gradient(ellipse at top,#150a20 0%,#05070d 60%); }
+  .wrap { max-width:960px; margin:0 auto; padding:56px 20px 96px; }
+  .hidden { display:none !important; }
+
+  /* Landing */
+  header.home { text-align:center; margin-bottom:12px; }
+  .kicker { text-transform:uppercase; letter-spacing:0.36em; font-size:12px; color:var(--gold); margin-bottom:16px; }
+  h1 { font-size:clamp(34px,7vw,56px); font-weight:600; letter-spacing:-0.015em; line-height:1.02; }
+  .sub { color:var(--muted); margin-top:18px; font-size:15.5px; max-width:600px; margin-inline:auto; }
+  .metrics { display:flex; justify-content:center; gap:32px; margin:34px 0 8px; flex-wrap:wrap; }
+  .metric { text-align:center; }
+  .metric .n { font-size:26px; font-weight:600; color:var(--gold); }
+  .metric .l { font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); margin-top:3px; }
+  .section-label { font-size:12px; text-transform:uppercase; letter-spacing:0.18em; color:var(--muted); margin:48px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+  .card { display:block; text-align:left; width:100%; text-decoration:none; color:inherit; background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:20px 20px 18px; transition:all .16s; position:relative; overflow:hidden; cursor:pointer; font:inherit; }
+  .card:hover { background:var(--panel-hover); border-color:var(--gold-dim); transform:translateY(-2px); }
+  .card.legends:hover { border-color:var(--purple-dim); }
+  .card .era-no { font-size:11px; letter-spacing:0.14em; color:var(--gold-dim); text-transform:uppercase; }
+  .card.legends .era-no { color:var(--purple-dim); }
+  .card h2 { font-size:19px; font-weight:600; margin:8px 0 4px; letter-spacing:-0.01em; }
+  .card .yrs { font-size:12.5px; color:var(--muted); font-variant-numeric:tabular-nums; }
+  .card .desc { font-size:13px; color:#b6bdcc; margin-top:10px; }
+  .card .count { display:inline-block; margin-top:14px; font-size:11px; letter-spacing:0.06em; color:var(--muted); border:1px solid var(--border); border-radius:6px; padding:3px 9px; }
+  .card .arrow { position:absolute; top:20px; right:18px; color:var(--muted); transition:transform .16s,color .16s; }
+  .card:hover .arrow { transform:translateX(3px); color:var(--gold); }
+  .card.legends:hover .arrow { color:var(--purple); }
+  .empty { opacity:0.5; }
+  .empty .card-inner { background:transparent; border:1px dashed var(--border); border-radius:14px; padding:20px; }
+  .empty h2 { font-size:17px; font-weight:600; color:var(--muted); margin:8px 0 4px; }
+  .empty .era-no { font-size:11px; letter-spacing:0.14em; color:var(--muted); text-transform:uppercase; }
+  .empty .yrs { font-size:12.5px; color:var(--muted); }
+  .empty .desc { font-size:13px; color:var(--muted); margin-top:10px; }
+
+  /* Era view */
+  .backbar { display:flex; align-items:center; gap:14px; margin-bottom:28px; }
+  .back-btn { display:inline-flex; align-items:center; gap:7px; background:transparent; border:1px solid var(--border); color:var(--muted); font-size:12.5px; letter-spacing:0.04em; padding:8px 14px; border-radius:8px; cursor:pointer; transition:all .15s; font:inherit; }
+  .back-btn:hover { color:var(--accent); border-color:var(--accent-dim); }
+  header.era { text-align:center; margin-bottom:34px; }
+  header.era .kicker { color:var(--accent); }
+  .era-band { display:inline-flex; align-items:center; gap:10px; margin-top:20px; border:1px solid var(--border); border-radius:999px; padding:7px 18px; font-size:13px; color:var(--muted); }
+  .era-band strong { color:var(--accent); font-weight:600; }
+  .controls { display:flex; justify-content:space-between; align-items:center; margin:26px 0 18px; gap:12px; flex-wrap:wrap; }
+  .filters { display:flex; gap:8px; flex-wrap:wrap; }
+  .filter-btn { background:transparent; border:1px solid var(--border); color:var(--muted); font-size:12px; letter-spacing:0.06em; padding:7px 13px; border-radius:8px; cursor:pointer; transition:all .15s; font:inherit; }
+  .filter-btn:hover { color:var(--text); }
+  .filter-btn.active { color:var(--accent); border-color:var(--accent-dim); background:rgba(242,193,78,0.07); }
+  body.legends-active .filter-btn.active { background:rgba(201,139,219,0.09); }
+  .toggle-all { background:transparent; border:1px solid var(--border); color:var(--muted); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; padding:8px 14px; border-radius:8px; cursor:pointer; transition:all .15s; font:inherit; }
+  .toggle-all:hover { color:var(--accent); border-color:var(--accent-dim); }
+  .phase-head { margin:32px 0 14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .phase-head h3 { font-size:15px; font-weight:600; letter-spacing:0.02em; color:var(--accent); }
+  .item { border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden; background:var(--panel); transition:border-color .18s; }
+  .item.open { border-color:var(--accent-dim); }
+  .item-head { width:100%; display:flex; align-items:center; gap:15px; text-align:left; background:none; border:none; color:inherit; cursor:pointer; padding:15px 18px; font:inherit; }
+  .item-head:hover { background:var(--panel-hover); }
+  .idx { font-size:12.5px; color:var(--accent-dim); font-variant-numeric:tabular-nums; min-width:20px; }
+  .head-main { flex:1; min-width:0; }
+  .title-row { display:flex; align-items:baseline; gap:9px; flex-wrap:wrap; }
+  .title { font-size:15.5px; font-weight:600; letter-spacing:-0.005em; }
+  .cat { font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted); border:1px solid var(--border); border-radius:4px; padding:1px 6px; }
+  .meta { font-size:12.5px; color:var(--muted); margin-top:3px; }
+  .meta .dot { opacity:.5; margin:0 6px; }
+  .chev { color:var(--muted); transition:transform .2s; flex-shrink:0; }
+  .item.open .chev { transform:rotate(180deg); color:var(--accent); }
+  .ibody { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+  .item.open .ibody { max-height:1200px; }
+  .body-inner { padding:4px 18px 20px; display:flex; gap:18px; }
+  .cover-wrap { position:relative; flex-shrink:0; width:124px; height:188px; }
+  .cover { position:relative; z-index:1; width:124px; height:188px; border-radius:6px; object-fit:cover; background:#11151f; border:1px solid var(--border); }
+  .cover.failed { opacity:0; }
+  .cover-ph { position:absolute; inset:0; z-index:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:12px 10px; border-radius:6px; border:1px solid var(--border); background:linear-gradient(155deg,#161d30,#0a0e18); color:var(--muted); font-size:12px; font-weight:600; line-height:1.3; letter-spacing:0.01em; }
+  .desc2 { flex:1; min-width:0; }
+  .facts { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px; }
+  .fact { font-size:11.5px; letter-spacing:0.02em; color:var(--muted); background:#0a0e18; border:1px solid var(--border); border-radius:6px; padding:4px 9px; }
+  .fact b { color:var(--text); font-weight:500; }
+  .summary { font-size:14px; color:#d3d9e6; }
+  .summary .lead { color:var(--accent); font-style:italic; display:block; margin-bottom:8px; font-size:13.5px; }
+  footer.page { margin-top:52px; text-align:center; font-size:12px; color:var(--muted); line-height:1.7; }
+  footer.page a { color:var(--accent-dim); }
+  @media (max-width:560px) { .body-inner { flex-direction:column; } .cover-wrap { width:104px; height:158px; } .cover { width:104px; height:158px; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- ===== LANDING VIEW ===== -->
+  <div id="home-view">
+    <header class="home">
+      <div class="kicker">Star Wars Audiobooks</div>
+      <h1>The Complete Audiobook<br>Library, by Era</h1>
+      <p class="sub">Every canon Star Wars audiobook — plus a Legends companion — organized into Lucasfilm's official timeline eras. Tap an era to open its guide with descriptions, dates, narrators, and cover art.</p>
+      <div class="metrics">
+        <div class="metric"><div class="n">7</div><div class="l">Canon eras</div></div>
+        <div class="metric"><div class="n">90+</div><div class="l">Canon titles</div></div>
+        <div class="metric"><div class="n">21</div><div class="l">Legends titles</div></div>
+      </div>
+    </header>
+    <div class="section-label">Canon continuity</div>
+    <div class="grid" id="canon-grid"></div>
+    <div class="section-label">Separate continuity</div>
+    <div class="grid" id="legends-grid"></div>
+    <footer class="page">
+      Sources: <a href="https://www.starwars.com/eras" target="_blank" rel="noopener">StarWars.com official eras</a> · <a href="https://starwars.fandom.com/wiki/List_of_canon_audio_productions" target="_blank" rel="noopener">Wookieepedia canon audio</a> · <a href="https://starwars.fandom.com/wiki/List_of_Legends_audio_productions" target="_blank" rel="noopener">Legends audio</a>.<br>
+      Eras I–II (Dawn of the Jedi, The Old Republic) have no canon audiobooks yet.
+    </footer>
+  </div>
+
+  <!-- ===== ERA VIEW ===== -->
+  <div id="era-view" class="hidden">
+    <div class="backbar">
+      <button class="back-btn" id="backBtn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+        All eras
+      </button>
+    </div>
+    <header class="era">
+      <div class="kicker">Star Wars Audiobooks</div>
+      <h1 id="era-title"></h1>
+      <p class="sub" id="era-sub"></p>
+      <div class="era-band" id="era-band"></div>
+    </header>
+    <div class="controls">
+      <div class="filters" id="filters"></div>
+      <button class="toggle-all" id="toggleAll">Expand all</button>
+    </div>
+    <div id="list"></div>
+    <footer class="page" id="era-footer"></footer>
+  </div>
+
+</div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
