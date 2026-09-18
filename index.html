@@ -5,23 +5,91 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Star Wars Audiobooks — Complete Library</title>
 <style>
-  :root { --bg:#05070d; --panel:#0d111c; --panel-hover:#161d30; --border:#1e2740; --gold:#f2c14e; --gold-dim:#b8923a; --purple:#c98bdb; --purple-dim:#8f5fa8; --text:#e8ecf5; --muted:#8b93a8; --accent:var(--gold); --accent-dim:var(--gold-dim); }
+  :root { 
+    --bg:#05070d; 
+    --panel:#0d111c; 
+    --panel-hover:#161d30; 
+    --border:#1e2740; 
+    --gold:#f2c14e;
+    --gold-dim:#b8923a; 
+    --purple:#c98bdb; 
+    --purple-dim:#8f5fa8; 
+    --text:#e8ecf5; 
+    --muted:#8b93a8;
+    --accent:var(--gold); 
+    --accent-dim:var(--gold-dim);
+  }
   * { box-sizing:border-box; margin:0; padding:0; }
-  body { background:radial-gradient(ellipse at top,#0a1020 0%,#05070d 55%); color:var(--text); font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; min-height:100vh; line-height:1.5; -webkit-font-smoothing:antialiased; }
-  body.legends-active { background:radial-gradient(ellipse at top,#150a20 0%,#05070d 60%); }
-  .wrap { max-width:960px; margin:0 auto; padding:56px 20px 96px; }
+  body { 
+    background:radial-gradient(ellipse at top,#0a1020 0%,#05070d 55%);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; min-height:100vh;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.legends-active { 
+    background:radial-gradient(ellipse at top,#150a20 0%,#05070d 60%); 
+  }
+  .wrap { 
+    max-width:960px; 
+    margin:0 auto;
+    padding:56px 20px 96px; 
+  }
   .hidden { display:none !important; }
 
   /* Landing */
-  header.home { text-align:center; margin-bottom:12px; }
-  .kicker { text-transform:uppercase; letter-spacing:0.36em; font-size:12px; color:var(--gold); margin-bottom:16px; }
-  h1 { font-size:clamp(34px,7vw,56px); font-weight:600; letter-spacing:-0.015em; line-height:1.02; }
-  .sub { color:var(--muted); margin-top:18px; font-size:15.5px; max-width:600px; margin-inline:auto; }
-  .metrics { display:flex; justify-content:center; gap:32px; margin:34px 0 8px; flex-wrap:wrap; }
+  header.home { 
+    text-align:center; 
+    margin-bottom:12px; 
+  }
+  .kicker { 
+    text-transform:uppercase; 
+    letter-spacing:0.36em; 
+    font-size:12px; color:var(--gold); 
+    margin-bottom:16px; 
+  }
+  h1 { 
+    font-size:clamp(34px,7vw,56px); 
+    font-weight:600; 
+    letter-spacing:-0.015em; 
+    line-height:1.02; 
+  }
+  .sub { 
+    color:var(--muted); 
+    margin-top:18px; 
+    font-size:15.5px; 
+    max-width:600px; 
+    margin-inline:auto; 
+  }
+  .metrics { 
+    display:flex; 
+    justify-content:center; 
+    gap:32px; 
+    margin:34px 0 8px; 
+    flex-wrap:wrap; 
+  }
   .metric { text-align:center; }
-  .metric .n { font-size:26px; font-weight:600; color:var(--gold); }
-  .metric .l { font-size:11px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); margin-top:3px; }
-  .section-label { font-size:12px; text-transform:uppercase; letter-spacing:0.18em; color:var(--muted); margin:48px 0 16px; padding-bottom:8px; border-bottom:1px solid var(--border); }
+  .metric .n { 
+    font-size:26px; 
+    font-weight:600; 
+    color:var(--gold); 
+  }
+  .metric .l { 
+    font-size:11px; 
+    text-transform:uppercase; 
+    letter-spacing:0.12em; 
+    color:var(--muted); 
+    margin-top:3px; 
+  }
+  .section-label { 
+    font-size:12px; 
+    text-transform:uppercase; 
+    letter-spacing:0.18em; 
+    color:var(--muted); 
+    margin:48px 0 16px; 
+    padding-bottom:8px; 
+    border-bottom:1px solid var(--border); 
+  }
   .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
   .card { display:block; text-align:left; width:100%; text-decoration:none; color:inherit; background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:20px 20px 18px; transition:all .16s; position:relative; overflow:hidden; cursor:pointer; font:inherit; }
   .card:hover { background:var(--panel-hover); border-color:var(--gold-dim); transform:translateY(-2px); }
@@ -59,7 +127,7 @@
   .toggle-all { background:transparent; border:1px solid var(--border); color:var(--muted); font-size:12px; letter-spacing:0.08em; text-transform:uppercase; padding:8px 14px; border-radius:8px; cursor:pointer; transition:all .15s; font:inherit; }
   .toggle-all:hover { color:var(--accent); border-color:var(--accent-dim); }
   .phase-head { margin:32px 0 14px; padding-bottom:8px; border-bottom:1px solid var(--border); }
-  .phase-head h3 { font-size:15px; font-weight:600; letter-spacing:0.02em; color:var(--accent); }
+  .phase-head h3 { font-size:15px; font-weight:600; letter-spacing:0.02em; color:var(--accent); text-transform: capitalize; }
   .item { border:1px solid var(--border); border-radius:12px; margin-bottom:10px; overflow:hidden; background:var(--panel); transition:border-color .18s; }
   .item.open { border-color:var(--accent-dim); }
   .item-head { width:100%; display:flex; align-items:center; gap:15px; text-align:left; background:none; border:none; color:inherit; cursor:pointer; padding:15px 18px; font:inherit; }
@@ -77,15 +145,60 @@
   .item.open .ibody { max-height:1200px; }
   .body-inner { padding:4px 18px 20px; display:flex; gap:18px; }
   .cover-wrap { position:relative; flex-shrink:0; width:124px; height:188px; }
-  .cover { position:relative; z-index:1; width:124px; height:188px; border-radius:6px; object-fit:cover; background:#11151f; border:1px solid var(--border); }
+  .cover { 
+    position:relative; 
+    z-index:1; 
+    width:124px; 
+    height:188px; 
+    border-radius:6px; 
+    object-fit:cover; 
+    background:#11151f;
+    border:1px solid var(--border); 
+  }
   .cover.failed { opacity:0; }
-  .cover-ph { position:absolute; inset:0; z-index:0; display:flex; align-items:center; justify-content:center; text-align:center; padding:12px 10px; border-radius:6px; border:1px solid var(--border); background:linear-gradient(155deg,#161d30,#0a0e18); color:var(--muted); font-size:12px; font-weight:600; line-height:1.3; letter-spacing:0.01em; }
+  .cover-ph { 
+    position:absolute; 
+    inset:0; z-index:0; 
+    display:flex; 
+    align-items:center; 
+    justify-content:center; 
+    text-align:center; 
+    padding:12px 10px; 
+    border-radius:6px; 
+    border:1px solid var(--border); 
+    background:linear-gradient(155deg,#161d30,#0a0e18); 
+    color:var(--muted); 
+    font-size:12px; 
+    font-weight:600; 
+    line-height:1.3; 
+    letter-spacing:0.01em; 
+  }
   .desc2 { flex:1; min-width:0; }
   .facts { display:flex; flex-wrap:wrap; gap:7px; margin-bottom:12px; }
-  .fact { font-size:11.5px; letter-spacing:0.02em; color:var(--muted); background:#0a0e18; border:1px solid var(--border); border-radius:6px; padding:4px 9px; }
-  .fact b { color:var(--text); font-weight:500; }
-  .summary { font-size:14px; color:#d3d9e6; }
-  .summary .lead { color:var(--accent); font-style:italic; display:block; margin-bottom:8px; font-size:13.5px; }
+  .fact { 
+    font-size:11.5px; 
+    letter-spacing:0.02em; 
+    color:var(--muted); 
+    background:#0a0e18; 
+    border:1px solid var(--border); 
+    border-radius:6px; 
+    padding:4px 9px; 
+  }
+  .fact b { 
+    color:var(--text); 
+    font-weight:500; 
+  }
+  .summary { 
+    font-size:14px; 
+    color:#d3d9e6; 
+  }
+  .summary .lead { 
+    color:var(--accent); 
+    font-style:italic; 
+    display:block; 
+    margin-bottom:8px; 
+    font-size:13.5px; 
+  }
   footer.page { margin-top:52px; text-align:center; font-size:12px; color:var(--muted); line-height:1.7; }
   footer.page a { color:var(--accent-dim); }
   @media (max-width:560px) { .body-inner { flex-direction:column; } .cover-wrap { width:104px; height:158px; } .cover { width:104px; height:158px; } }
@@ -103,7 +216,7 @@
       <div class="metrics">
         <div class="metric"><div class="n">7</div><div class="l">Canon eras</div></div>
         <div class="metric"><div class="n">90+</div><div class="l">Canon titles</div></div>
-        <div class="metric"><div class="n">21</div><div class="l">Legends titles</div></div>
+        <div class="metric"><div class="n">36</div><div class="l">Legends titles</div></div>
       </div>
     </header>
     <div class="section-label">Canon continuity</div>
