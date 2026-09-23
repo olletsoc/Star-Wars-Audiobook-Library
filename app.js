@@ -82,7 +82,7 @@ function openEra(e, isLegends) {
 }
 
 function filterLabel(c) {
-  return { Adult:'Adult novels', YA:'Young adult', Junior:'Junior', 'Audio Drama':'Audio dramas', Anthology:'Anthologies', Unabridged:'Unabridged' }[c] || c;
+  return { Adult:'Adult novels', YA:'Young adult', Junior:'Junior', 'Audio Drama':'Audio dramas', Anthology:'Anthologies', Unabridged:'Unabridged', Aftermath:'Aftermath', AlphabetSquadron:'Alphabet Squadron'} [c] || c;
 }
 
 function footerFor(e, isLegends) {
