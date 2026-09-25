@@ -56,4 +56,3 @@ zero internet dependency.
   `publisher`, `timeline`, `runtime`, `cover`, `lead`, `summary`).
 
 ---
-*Drafted with Dia*
